@@ -25,10 +25,26 @@ const WritePage = () => {
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
   const [catSlug, setCatSlug] = useState("");
-  const [_document, set_document] = useState(null);
+
+  const handleSubmit = async () => {
+    const res = await fetch("/api/posts", {
+      method: "POST",
+      body: JSON.stringify({
+        title,
+        desc: value,
+        img: media,
+        slug: slugify(title),
+        catSlug: catSlug || "style", //If not selected, choose the general category
+      }),
+    });
+
+    if (res.status === 200) {
+      const data = await res.json();
+      router.push(`/posts/${data.slug}`);
+    }
+  };
 
   useEffect(() => {
-    set_document(document);
     const storage = getStorage(app);
     const upload = () => {
       const name = new Date().getTime() + file.name;
@@ -78,24 +94,6 @@ const WritePage = () => {
       .replace(/[^\w\s-]/g, "")
       .replace(/[\s_-]+/g, "-")
       .replace(/^-+|-+$/g, "");
-
-  const handleSubmit = async () => {
-    const res = await fetch("/api/posts", {
-      method: "POST",
-      body: JSON.stringify({
-        title,
-        desc: value,
-        img: media,
-        slug: slugify(title),
-        catSlug: catSlug || "style", //If not selected, choose the general category
-      }),
-    });
-
-    if (res.status === 200) {
-      const data = await res.json();
-      router.push(`/posts/${data.slug}`);
-    }
-  };
 
   return (
     <div className={styles.container}>

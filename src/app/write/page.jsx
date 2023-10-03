@@ -25,6 +25,7 @@ const WritePage = () => {
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
   const [catSlug, setCatSlug] = useState("");
+  const [_document, set_document] = useState(null);
 
   useEffect(() => {
     const storage = getStorage(app);
@@ -59,6 +60,7 @@ const WritePage = () => {
     };
 
     file && upload();
+    set_document(document);
   }, [file]);
 
   if (status === "loading") {

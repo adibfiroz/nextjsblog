@@ -15,8 +15,6 @@ import {
 import { app } from "@/utils/firebase";
 import ReactQuill from "react-quill";
 
-const storage = getStorage(app);
-
 const WritePage = () => {
   const { status } = useSession();
   const router = useRouter();
@@ -27,10 +25,11 @@ const WritePage = () => {
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
   const [catSlug, setCatSlug] = useState("");
-  // const [_document, set_document] = useState(null);
+  const [_document, set_document] = useState(null);
 
   useEffect(() => {
-    // set_document(document);
+    set_document(document);
+    const storage = getStorage(app);
     const upload = () => {
       const name = new Date().getTime() + file.name;
       const storageRef = ref(storage, name);
